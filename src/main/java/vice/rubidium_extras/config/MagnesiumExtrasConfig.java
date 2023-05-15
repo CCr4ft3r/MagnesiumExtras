@@ -2,10 +2,11 @@ package vice.rubidium_extras.config;
 
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.electronwill.nightconfig.core.io.WritingMode;
-import me.jellysquid.mods.sodium.client.gui.options.TextProvider;
-import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import java.nio.file.Path;
+import java.util.Collections;
+import java.util.List;
 
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 
@@ -25,6 +26,7 @@ public class MagnesiumExtrasConfig
 
     public static ConfigValue<Integer> maxEntityRenderDistanceSquare;
     public static ConfigValue<Integer> maxEntityRenderDistanceY;
+    public static ConfigValue<List<? extends String>> entityBlacklist;
 
     public static ConfigValue<Boolean> fog;
     public static ConfigValue<Boolean> enableDistanceChecks;
@@ -89,6 +91,8 @@ public class MagnesiumExtrasConfig
 
             maxEntityRenderDistanceSquare = b.define("(Entity) Max Horizontal Render Distance [Squared, Default 64^2]", 4096);
             maxEntityRenderDistanceY = b.define("(Entity) Max Vertical Render Distance [Raw, Default 32]", 32);
+            entityBlacklist = b.comment("List of entities to not cull based on distance." +
+                "Example: \"minecraft:bat\"").defineListAllowEmpty(Collections.singletonList("Entity Blacklist"), Collections::emptyList, (s) -> ResourceLocation.tryParse((String) s) != null);
         });
 
         builder.Block("Zoom", b -> {
